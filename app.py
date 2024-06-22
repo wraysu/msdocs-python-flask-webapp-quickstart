@@ -1,4 +1,41 @@
 import os
+import sys
+
+import aiohttp
+
+from fastapi import Request, FastAPI, HTTPException
+
+from langchain.chat_models import ChatOpenAI
+from langchain.agents import AgentType
+from langchain.agents import initialize_agent
+
+from stock_price import StockPriceTool
+from stock_peformace import StockPercentageChangeTool
+from stock_peformace import StockGetBestPerformingTool
+
+from linebot import (
+    AsyncLineBotApi, WebhookParser
+)
+from linebot.aiohttp_async_http_client import AiohttpAsyncHttpClient
+from linebot.exceptions import (
+    InvalidSignatureError
+)
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage,
+)
+
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv())  # read local .env file
+
+# get channel_secret and channel_access_token from your environment variable
+channel_secret = os.getenv('ChannelSecret', None)
+channel_access_token = os.getenv('ChannelAccessToken', None)
+if channel_secret is None:
+    print('Specify LINE_CHANNEL_SECRET as environment variable.')
+    sys.exit(1)
+if channel_access_token is None:
+    print('Specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
+    sys.exit(1)
 
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)

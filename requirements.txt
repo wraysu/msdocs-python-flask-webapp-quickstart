@@ -4,7 +4,7 @@ Werkzeug==2.2.2
 line-bot-sdk==3.5.0
 fastapi
 langchain
-openai=
+openai
 yfinance
 pydantic
 tiktoken
